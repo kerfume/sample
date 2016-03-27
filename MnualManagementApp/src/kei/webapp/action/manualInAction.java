@@ -107,8 +107,13 @@ public class manualInAction extends ActionSupport implements SessionAware {
 			}
 			this.makeInData(cellTable);
 		} // else System.out.println("no");
-		this.setMessage(errmes.toString());
 		System.out.println(mcbs.size()+":"+mibss.size());
+		this.uniqueCheck(mcbs);
+		this.setMessage(errmes.toString());
+		if(errnum == 0){
+			//DB登録
+			db.manualInsert(mcbs, mibss);
+		}
 
 		return "sucsess";
 	}
@@ -151,11 +156,12 @@ public class manualInAction extends ActionSupport implements SessionAware {
 					mib.setManual_name(cells.get(s+5));
 				}
 				mibs.add(mib);
-				System.out.println("point\n" + mib.getManual_classification_name()+"\n"+mib.getManual_id()+"\n"+mib.getManual_name()+"\nout");
+				System.out.println("point1\n" + mib.getManual_classification_name()+"\n"+mib.getManual_id()+"\n"+mib.getManual_name()+"\nout");
 			}
 			//checkメソッド
 			this.checkData(mcb, mibs, i-1);
 			//登録用リストに追加
+			System.out.println("point2\n" + mcb.getColor_category()+"\nout");
 			mcbs.add(mcb);
 			mibss.add(mibs);
 		}
@@ -176,11 +182,12 @@ public class manualInAction extends ActionSupport implements SessionAware {
 			errmes.append(rownum + "行目の「色区分」未入力です。\n");
 		}else{
 			try{
-				int tmp = Integer.parseInt(mcb.getColor_category());
+				double t = Double.valueOf(mcb.getColor_category());
+				int tmp = (int) t;
 				if(0 > tmp && 14 < tmp){
 					errnum++;
 					errmes.append(rownum + "行目の「色区分」は0~14のみ入力出来ます。\n");
-				}
+				}mcb.setColor_category(String.valueOf(tmp));
 			}catch(Exception e){
 				errnum++;
 				errmes.append(rownum + "行目の「色区分」が不正な値です。\n");
@@ -222,7 +229,20 @@ public class manualInAction extends ActionSupport implements SessionAware {
 			}
 		}
 	}
-
+	
+	public void uniqueCheck(ArrayList<manualclassbean> mcbs){
+		Set<String> checkHash = new HashSet<String>();
+		for(int i=0;i<mcbs.size();i++){
+			String str = mcbs.get(i).getManual_classification_id();
+			if(checkHash.contains(str)){
+				errnum++;
+				errmes.append("マニュアル種別IDに重複があります。\n");
+				return;
+			}else{
+				checkHash.add(str);
+			}
+		}
+	}
 	// get,set
 	public String getDepartment() {
 		return department;

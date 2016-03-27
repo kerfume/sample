@@ -11,6 +11,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import kei.webapp.beans.manualclassbean;
+import kei.webapp.beans.manualinbean;
 import kei.webapp.beans.udatabean;
 import kei.webapp.beans.userbean;
 
@@ -315,6 +317,54 @@ public class DBconnector {
 		
 	}
 
+	public void manualInsert(ArrayList<manualclassbean> mcbs,ArrayList<ArrayList<manualinbean>> mibss){
+		try{
+			Conect();
+			conn.setAutoCommit(false);
+			//登録処理
+			PreparedStatement pstmt;
+			String sql = "INSERT INTO tb_trn_manual_classification" +
+					 " VALUES(?,?,?,?,?,?,?,NOW(),NOW(),0);";
+		
+			pstmt = conn.prepareStatement(sql);
+			
+			for(int i=0;i<mcbs.size();i++){
+				manualclassbean mcb = mcbs.get(i);
+				
+				pstmt.setString(1,mcb.getCompany_id());
+				pstmt.setString(2,mcb.getGroup1_id());
+				pstmt.setString(3,mcb.getGroup2_id());
+				pstmt.setString(4,mcb.getManual_classification_id());
+				pstmt.setInt(5,0);
+				pstmt.setString(6,mcb.getManual_classification_name());
+				pstmt.setString(7,mcb.getColor_category());
+				
+				int rnum = pstmt.executeUpdate();
+				System.out.println("更新:"+rnum);
+			}
+			
+			conn.commit();
+		}catch(Exception e){
+			try {
+		           // ロールバック  …… 【3】
+				   e.printStackTrace();
+		           conn.rollback();
+		       }
+		       catch (SQLException se) {
+		          /* ログ出力 */
+		    	   e.printStackTrace();
+		       }
+		}finally{
+			try{
+				if (conn != null) {
+					conn.close();
+				}
+			}catch (SQLException e) {
+		          /* ログ出力 */
+		    	   e.printStackTrace();
+			}
+		}
+	}
 	// コネクション確立用メソッド
 	private static void Conect() throws Exception {
 		conn = null;
