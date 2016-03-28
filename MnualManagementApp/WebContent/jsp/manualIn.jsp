@@ -21,6 +21,9 @@
 	<br />
 	<br />
 	<div id="body_m_in">
+		<s:actionmessage/>
+		<s:actionerror />
+		<s:fielderror cssStyle="color:#ff0000;" />
 		<s:form method="post" action="manualinaction" theme="simple"
 			enctype="multipart/form-data">
 			<table id="m_i" class="wwFormTable">

@@ -12,6 +12,28 @@ public class manualinbean {
 	private String manual_picture;
 	private int delete_flag;
 	private String manual_classification_name;
+	//階層1
+	private String[] dir_id = new String[4];
+	private String[] dir_name = new String[4];
+	
+	public String[] getDir_id_full(){
+		return dir_id;
+	}
+	public String[] getDir_name_full(){
+		return dir_name;
+	}
+	public String getDir_id(int index){
+		return dir_id[index];
+	}
+	public void setDir_id(String dir_id,int index){
+		this.dir_id[index] = dir_id;
+	}
+	public String getDir_name(int index){
+		return dir_name[index];
+	}
+	public void setDir_name(String dir_name,int index){
+		this.dir_name[index] = dir_name;
+	}
 	public String getManual_classification_name() {
 		return manual_classification_name;
 	}
