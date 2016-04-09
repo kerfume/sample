@@ -519,7 +519,23 @@ public class DBconnector {
 			rs.next();
 			
 			if(rs.getInt(1) > 0){
-				sql = "こっから書く-------------------------";
+				//同盟のマニュアルが一件以上ヒットした場合
+				sql = "UPDATE tb_trn_manual_details a,(SELECT MAX(update_count) tar FROM tb_trn_manual_details WHERE manual_name = ? ) b SET delete_flag = 1 WHERE a.update_count = b.tar;";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, mib.getManual_name());
+				
+				pstmt.executeUpdate();
+				
+				//マニュアル種別用
+				sql = "UPDATE tb_trn_manual_classification a,(SELECT MAX(update_count) tar FROM tb_trn_manual_details WHERE manual_name = ? ) b SET delete_flag = 1 WHERE a.update_count = b.tar;";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, mib.getManual_name());
+				
+				pstmt.executeUpdate();
 			}
 			
 			// 登録処理
@@ -534,7 +550,7 @@ public class DBconnector {
 			pstmt.setString(3, mcb.getGroup2_id());
 			pstmt.setString(4, mcb.getManual_classification_name());
 			
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			rs.next();
 			
 			sql = "INSERT INTO tb_trn_manual_classification" + " VALUES(?,?,?,?,?,?,?,NOW(),?,0);";
@@ -572,7 +588,7 @@ public class DBconnector {
 			System.out.println("更新:" + rnum);
 			//mib(各階層の登録)
 			for(int i=0;i < 4;i++){
-				if(mib.getDir_name(i) != null){
+				if(mib.getDir_name(i) != null && mib.getDir_id(i) != null){
 					sql = "INSERT INTO tb_trn_manual_details VALUES(?,?,?,?,?,?,null,null,null,NOW(),?,0);";
 
 					pstmt = conn.prepareStatement(sql);

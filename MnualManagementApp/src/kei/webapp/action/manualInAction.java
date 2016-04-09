@@ -104,10 +104,14 @@ public class manualInAction extends ActionSupport implements SessionAware {
 			// ID採番メソッド
 			this.idMaker(mcb, mib);
 			// DB登録
-			if(mcb.getUpdate_count() == 0)
+			if(mcb.getUpdate_count() == 0){
 				db.manualInsert(mcb, mib);
-			else
+				this.addActionMessage("データの取り込みが完了しました。");
+			}
+			else{
 				db.manualUpdate(mcb, mib);
+				this.addActionMessage("データの取り込みが完了しました。");
+			}
 		}
 		this.setMessage(errmes.toString());
 		
