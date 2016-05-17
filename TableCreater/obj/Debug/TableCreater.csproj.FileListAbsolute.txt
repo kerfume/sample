@@ -1,0 +1,10 @@
+E:\v_work\TableCreater\TableCreater\bin\Debug\TableCreater.exe.config
+E:\v_work\TableCreater\TableCreater\obj\Debug\TableCreater.csprojResolveAssemblyReference.cache
+E:\v_work\TableCreater\TableCreater\obj\Debug\TableCreater.Form1.resources
+E:\v_work\TableCreater\TableCreater\obj\Debug\TableCreater.Properties.Resources.resources
+E:\v_work\TableCreater\TableCreater\obj\Debug\TableCreater.csproj.GenerateResource.Cache
+E:\v_work\TableCreater\TableCreater\bin\Debug\TableCreater.exe
+E:\v_work\TableCreater\TableCreater\bin\Debug\TableCreater.pdb
+E:\v_work\TableCreater\TableCreater\bin\Debug\MySql.Data.dll
+E:\v_work\TableCreater\TableCreater\obj\Debug\TableCreater.exe
+E:\v_work\TableCreater\TableCreater\obj\Debug\TableCreater.pdb
