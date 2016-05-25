@@ -6,7 +6,7 @@
   
   <bean id="main" class="jp.kerfume.app.logic.FileToPerpeImpl" >
   	<property name="path" value="${infile.path}" />
-  	<property name="file" value="${infile.name}" />
+  	<property name="filename" value="${infile.name}" />
   </bean>
   
   <bean id="appProps"
