@@ -1,6 +1,9 @@
 package jp.kerfume.app.interf;
 
-public interface MyDaoInterface {
-	void conect() throws Exception;
-	void close() throws Exception;
+import java.io.Closeable;
+import java.io.IOException;
+
+public interface MyDaoInterface extends Closeable{
+	void conect() throws IOException;
+	void close() throws IOException;
 }

@@ -53,7 +53,7 @@ public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 	}
 
 	@Override
-	public int insert(ArrayList<InDataBean> beanList) throws Exception {
+	public boolean insert(ArrayList<InDataBean> beanList) throws IOException {
 		try{
 			session.beginTransaction();
 			for (InDataBean emp : beanList){
@@ -64,9 +64,9 @@ public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 			e.printStackTrace();
 			logger.error("EMPテーブルへのデータの挿入に失敗しました。");
 			session.getTransaction().rollback();
-	    	return 1;
+	    	return false;
 	    }
-		return 0;
+		return true;
 	}
 
 	@Override

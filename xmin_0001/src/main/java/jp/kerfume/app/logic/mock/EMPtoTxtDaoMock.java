@@ -1,5 +1,6 @@
 package jp.kerfume.app.logic.mock;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import jp.kerfume.app.bean.InDataBean;
@@ -8,13 +9,13 @@ import jp.kerfume.app.interf.MyDaoInterfaceEMP;
 public class EMPtoTxtDaoMock implements MyDaoInterfaceEMP{
 
 	@Override
-	public void conect() throws Exception {
+	public void conect() throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void close() throws Exception {
+	public void close() throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -26,9 +27,9 @@ public class EMPtoTxtDaoMock implements MyDaoInterfaceEMP{
 	}
 
 	@Override
-	public int insert(ArrayList<InDataBean> beanList) throws Exception {
+	public boolean insert(ArrayList<InDataBean> beanList) throws IOException {
 		// TODO Auto-generated method stub
-		return 0;
+		return false;
 	}
 
 	@Override
