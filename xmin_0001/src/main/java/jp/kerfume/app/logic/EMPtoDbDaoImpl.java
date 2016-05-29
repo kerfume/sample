@@ -10,15 +10,23 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import jp.kerfume.app.bean.InDataBean;
 import jp.kerfume.app.interf.*;
 
 public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 
-	private  SessionFactory sessionFactory;
-	private  ServiceRegistry serviceRegistry;
-	private  Session session;
+	private SessionFactory sessionFactory;
+	private ServiceRegistry serviceRegistry;
+	private Session session;
+	private Logger logger;
+	
+	public EMPtoDbDaoImpl(){
+		logger = Logger.getLogger (App.class.getName ());
+		DOMConfigurator.configure("log4j_common.xml");
+	}
 	
 	@Override
 	public void conect() throws IOException {
@@ -54,6 +62,7 @@ public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 			session.getTransaction().commit();
 		}catch(HibernateException e){
 			e.printStackTrace();
+			logger.error("EMPテーブルへのデータの挿入に失敗しました。");
 			session.getTransaction().rollback();
 	    	return 1;
 	    }
