@@ -5,6 +5,20 @@
   
   
   <bean id="EMPtoDb" class="jp.kerfume.app.logic.EMPtoDbDaoImpl" ></bean>
-  <bean id="EMPtoTxt" class="jp.kerfume.app.logic.mock.EMPtoTxtDaoMock" ></bean>
+  <bean id="EMPtoTxt" class="jp.kerfume.app.logic.EMPtoTxtDaoImpl" >
+  	<property name="path" value="${outfile.path}" />
+  	<property name="file" value="${outfile.name}" />
+  </bean>
+  
+  <bean id="appProps"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- jar内部 --><value>file:xmin_0001conf.properties</value>
+				<!-- 相対指定 （jar実行ディレクトリ./） <value>file:deploy_res/filescontext.properties</value> -->
+				<!-- 絶対指定 <value>file:E:\tmp\filescontext.properties</value> -->
+			</list>
+		</property>
+	</bean>
   
  </beans>

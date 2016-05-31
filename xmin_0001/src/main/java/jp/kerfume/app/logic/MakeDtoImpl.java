@@ -99,7 +99,7 @@ public class MakeDtoImpl implements MakeDto{
 			throw new RuntimeException();
 		}
 		
-		if(idb.getSex() >= 3 || idb.getSex() <= -1){
+		if(idb.getSex() >= 2 || idb.getSex() <= -1){
 			logger.error("xmin_0001_004 要素「sex」の値不正です。");
 			throw new RuntimeException();
 		}

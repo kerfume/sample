@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Built-By: kei
-Class-Path: lib/spring-core-3.1.1.RELEASE.jar lib/spring-asm-3.1.1.REL
- EASE.jar lib/commons-logging-1.1.1.jar lib/spring-2.5.6.jar
-Created-By: Apache Maven 3.3.9
-Build-Jdk: 1.8.0_65
-Main-Class: kei.app.App
-

@@ -24,7 +24,7 @@ public class EMPtoDbDaoImplTest {
 		ib.setSex(0);
 		instance.add(ib);
 		
-		assertThat(sut.insert(instance),is(0));
+		assertThat(sut.insert(instance),is(true));
 		
 		sut.close();
 

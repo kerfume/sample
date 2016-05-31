@@ -2,6 +2,8 @@ package jp.kerfume.app.logic;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -44,6 +46,7 @@ public class FileToPerpeImpl implements FileToPerpe{
     		logger.info("xmlの読み込みに成功しました。");
     	}catch(Exception e){
     		logger.error(e);
+    		logger.error("xmlの読み込みに失敗しました。");
     		System.exit(1);
     	}
     	
@@ -54,15 +57,21 @@ public class FileToPerpeImpl implements FileToPerpe{
     	arrayIndata.add(indata);
     	try(MyDaoInterfaceEMP empDao = mydaofac.getDAOEMP();){
     		empDao.conect();
-    		if(!empDao.insert(arrayIndata)) throw new IOException("データの挿入に失敗しました。");
+    		if(!empDao.insert(arrayIndata)) throw new IOException();
     		
     	}catch(IOException e){
-    		logger.error(e);
+    		logger.error("xmin_0001_005 データの書き込みに失敗しました。");
     		System.exit(1);
     	}
     	
     	//後理部
-		
+    	try{
+    		Files.delete(Paths.get(path + "\\" + filename));
+    	}catch(IOException e){
+    		logger.error(e);
+    		logger.error("ファイルの削除に失敗しました。");
+    		System.exit(1);
+    	}
 	}
 	
 	

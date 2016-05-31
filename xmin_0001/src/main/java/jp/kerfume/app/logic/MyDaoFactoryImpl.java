@@ -8,7 +8,11 @@ import org.apache.log4j.xml.DOMConfigurator;
 
 import jp.kerfume.app.interf.*;
 
-
+/**
+ * 設定ファイルを参照し、各レコードに適当なDAOを返す（今回はEMPのみ）
+ * @author kei
+ *
+ */
 public class MyDaoFactoryImpl implements MyDaoFactory{
 
 	private String daoType = null;

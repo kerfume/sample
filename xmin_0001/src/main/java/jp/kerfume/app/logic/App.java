@@ -15,6 +15,8 @@ public class App
 {
 	public static void main( String[] args )
     {
+		long stime = System.currentTimeMillis();
+		//System.out.println(stime = System.currentTimeMillis());
     	Logger logger = Logger.getLogger (App.class.getName ());
     	DOMConfigurator.configure("log4j_common.xml");
     	
@@ -25,5 +27,7 @@ public class App
         main.run();
         
         logger.info ("xmin_0001 End");
+        
+        System.out.println(System.currentTimeMillis() - stime);
     }
 }

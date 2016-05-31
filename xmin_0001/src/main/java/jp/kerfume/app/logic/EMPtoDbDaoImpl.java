@@ -61,7 +61,7 @@ public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 			}
 			session.getTransaction().commit();
 		}catch(HibernateException e){
-			e.printStackTrace();
+			logger.error(e);
 			logger.error("EMPテーブルへのデータの挿入に失敗しました。");
 			session.getTransaction().rollback();
 	    	return false;
