@@ -21,7 +21,7 @@ public class MyDaoFactoryImpl implements MyDaoFactory{
 	private Logger logger;
 	
 	public MyDaoFactoryImpl(){
-		logger = Logger.getLogger (App.class.getName ());
+		logger = Logger.getLogger (MyDaoFactoryImpl.class.getName ());
 		DOMConfigurator.configure("log4j_common.xml");
 	}
 	

@@ -16,6 +16,12 @@ import org.apache.log4j.xml.DOMConfigurator;
 import jp.kerfume.app.bean.InDataBean;
 import jp.kerfume.app.interf.*;
 
+/**
+ * EMPレコードのDBへの永続化を管理するDAO
+ * 
+ * @author kei
+ *
+ */
 public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 
 	private SessionFactory sessionFactory;
@@ -24,10 +30,16 @@ public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 	private Logger logger;
 	
 	public EMPtoDbDaoImpl(){
-		logger = Logger.getLogger (App.class.getName ());
+		logger = Logger.getLogger (EMPtoTxtDaoImpl.class.getName ());
 		DOMConfigurator.configure("log4j_common.xml");
 	}
 	
+	/**
+	 * DBへの接続を確立するクラス
+	 * @param -
+	 * @return -
+	 * 
+	 */
 	@Override
 	public void conect() throws IOException {
 		
@@ -39,7 +51,12 @@ public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 	    session = sessionFactory.openSession();
 		
 	}
-
+	/**
+	 * DBから切断するクラス
+	 * @param -
+	 * @return -
+	 * 
+	 */
 	@Override
 	public void close() throws IOException {
 		sessionFactory.close();
@@ -51,7 +68,12 @@ public class EMPtoDbDaoImpl implements MyDaoInterfaceEMP{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	 * EMPレコードをDBへの永続化を行うクラス
+	 * @param EMPレコードのリスト
+	 * @return 成功の場合はtrue,失敗の場合はfalse
+	 * 
+	 */
 	@Override
 	public boolean insert(ArrayList<InDataBean> beanList) throws IOException {
 		try{

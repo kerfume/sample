@@ -8,7 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import jp.kerfume.app.interf.*;
 
 /**
- * Hello world!
+ * MainClass
  *
  */
 public class App 

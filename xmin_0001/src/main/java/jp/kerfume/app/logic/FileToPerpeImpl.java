@@ -16,6 +16,12 @@ import jp.kerfume.app.interf.MakeDto;
 import jp.kerfume.app.interf.MyDaoInterfaceEMP;
 import jp.kerfume.app.bean.*;
 
+/**
+ * xmlファイルを読み込みDBもしくはTXTへの永続化を行う
+ * 
+ * @author kei
+ *
+ */
 public class FileToPerpeImpl implements FileToPerpe{
 	
 	private String path;

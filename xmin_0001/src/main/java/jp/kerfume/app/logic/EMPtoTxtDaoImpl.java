@@ -14,6 +14,12 @@ import org.hibernate.HibernateException;
 import jp.kerfume.app.bean.InDataBean;
 import jp.kerfume.app.interf.*;
 
+/**
+ * EMPレコードのTXTファイルへの永続化を管理するDAO
+ * 
+ * @author kei
+ *
+ */
 public class EMPtoTxtDaoImpl implements MyDaoInterfaceEMP{
 	
 	String path;
@@ -22,10 +28,16 @@ public class EMPtoTxtDaoImpl implements MyDaoInterfaceEMP{
 	private Logger logger;
 	
 	public EMPtoTxtDaoImpl(){
-		logger = Logger.getLogger (App.class.getName ());
+		logger = Logger.getLogger (EMPtoTxtDaoImpl.class.getName ());
 		DOMConfigurator.configure("log4j_common.xml");
 	}
 	
+	/**
+	 * TXTファイルへの接続を確立するクラス
+	 * @param -
+	 * @return -
+	 * 
+	 */
 	@Override
 	public void conect() throws IOException {
 		if(Files.exists(Paths.get(path +"\\"+ file))){
@@ -37,7 +49,13 @@ public class EMPtoTxtDaoImpl implements MyDaoInterfaceEMP{
 		
 		
 	}
-
+	
+	/**
+	 * TXTファイルから切断するクラス
+	 * @param -
+	 * @return -
+	 * 
+	 */
 	@Override
 	public void close() throws IOException {
 		bw.close();
@@ -50,6 +68,12 @@ public class EMPtoTxtDaoImpl implements MyDaoInterfaceEMP{
 		return null;
 	}
 
+	/**
+	 * EMPレコードをTXTファイルへの永続化を行うクラス
+	 * @param EMPレコードのリスト
+	 * @return 成功の場合はtrue,失敗の場合はfalse
+	 * 
+	 */
 	@Override
 	public boolean insert(ArrayList<InDataBean> beanList) throws IOException {
 		try{
