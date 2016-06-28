@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import kei.webapp.beans.manualclassbean;
+import kei.webapp.beans.manualcontentbean;
 import kei.webapp.beans.manualinbean;
 import kei.webapp.beans.udatabean;
 import kei.webapp.beans.userbean;
@@ -208,6 +209,196 @@ public class DBconnector {
 		return grplist;
 	}
 
+	public HashMap<String, String> getManuList(String company_id, String dpt_id, String grp_id, int gettype) {
+		HashMap<String, String> manulist = new HashMap<>();
+		if (gettype == 1)
+			manulist.put("00", "");
+		try {
+			Conect();
+			String sql = "SELECT DISTINCT manual_classification_id ,manual_classification_name FROM mma.tb_trn_manual_classification where company_id = ? and group1_id = ? and group2_id = ? and delete_flag = 0;";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, company_id);
+			pstmt.setString(2, dpt_id);
+			pstmt.setString(3, grp_id);
+			ResultSet rs = pstmt.executeQuery();
+			boolean notrecode = true;
+			while (rs.next()) {
+				notrecode = false;
+				manulist.put(rs.getString(1), rs.getString(2));
+			}
+			if (notrecode)
+				manulist.put("00", "該当マニュアルなし");
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return manulist;
+	}
+
+	public manualcontentbean getManuBean(String company_id, String dept_id, String grp_id, String manu_id, int updcnt) {
+		//メンバ宣言
+		final manualcontentbean mb = new manualcontentbean();
+		
+		class LocalUtil{
+			public boolean checkAndSet(ResultSet rs) throws SQLException{
+				if(rs.getString("manual_id").length() > 6){
+					mb.setManual_content1(rs.getString("manual_content1"));
+					mb.setManual_content2(rs.getString("manual_content2"));
+					
+					return true;
+				}
+				return false;
+			}
+		}
+		
+		//logic
+		try {
+			Conect();
+
+			String sql = "SELECT * FROM tb_trn_manual_details "
+					+ "where delete_flag = 0 and MID(manual_id,1,2) = ? and company_id = ? and group1_id = ? and group2_id = ? and update_count = ? order by LENGTH(manual_id),manual_id;";
+
+			mb.setManual_ID(company_id + dept_id + grp_id + manu_id);// 企業id+部署id+グループid+マニュアル種別id
+			mb.setUpdcnt(updcnt);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, manu_id);
+			pstmt.setString(2, company_id);
+			pstmt.setString(3, dept_id);
+			pstmt.setString(4, grp_id);
+			pstmt.setInt(5, updcnt);
+			ResultSet rs = pstmt.executeQuery();
+			int cnt = 0;
+			LocalUtil lu = new LocalUtil();
+			while (rs.next()) {
+				switch (++cnt) {
+				case 1:
+					if(lu.checkAndSet(rs))
+						mb.setKaisou4(rs.getString("manual_name"));
+					else mb.setKaisou1(rs.getString("manual_name"));
+					
+					break;
+				case 2:
+					if(lu.checkAndSet(rs))
+						mb.setKaisou4(rs.getString("manual_name"));
+					else mb.setKaisou2(rs.getString("manual_name"));
+					
+					
+					break;
+				case 3:
+					if(lu.checkAndSet(rs))
+						mb.setKaisou4(rs.getString("manual_name"));
+					else mb.setKaisou3(rs.getString("manual_name"));
+					
+					break;
+				case 4:
+					lu.checkAndSet(rs);
+					mb.setKaisou4(rs.getString("manual_name"));
+					
+					break;
+				}
+			}
+			
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			try{
+			if (conn != null) {
+				conn.close();
+			}			
+			}catch(SQLException e){}
+		}
+		
+		return mb;
+	}
+
+	public List<manualcontentbean> getManuBeanList(String company_id, String dept_id, String grp_id, String manu_id) {
+		List<manualcontentbean> mbL = new ArrayList<>();
+		List<Integer> updcntList = new ArrayList<>();
+
+		try {
+			Conect();
+			String sql = "SELECT DISTINCT UPDATE_COUNT FROM tb_trn_manual_classification where delete_flag = 0 and manual_classification_id =? and company_id=? and group1_id = ? and group2_id = ?;";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, manu_id);
+			pstmt.setString(2, company_id);
+			pstmt.setString(3, dept_id);
+			pstmt.setString(4, grp_id);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				updcntList.add(rs.getInt(1));
+			}
+
+			sql = "SELECT manual_name FROM tb_trn_manual_details "
+					+ "where delete_flag = 0 and MID(manual_id,1,2) = ? and company_id = ? and group1_id = ? and group2_id = ? and update_count = ? order by LENGTH(manual_id),manual_id;";
+
+			for (int updcnt : updcntList) {
+				manualcontentbean mb = new manualcontentbean();
+				mb.setManual_ID(company_id + dept_id + grp_id + manu_id);// 企業id+部署id+グループid+マニュアル種別id
+				mb.setUpdcnt(updcnt);
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, manu_id);
+				pstmt.setString(2, company_id);
+				pstmt.setString(3, dept_id);
+				pstmt.setString(4, grp_id);
+				pstmt.setInt(5, updcnt);
+				rs = pstmt.executeQuery();
+				int cnt = 0;
+				while (rs.next()) {
+					switch (++cnt) {
+					case 1:
+						mb.setKaisou1(rs.getString(1));
+						break;
+					case 2:
+						mb.setKaisou2(rs.getString(1));
+						break;
+					case 3:
+						mb.setKaisou3(rs.getString(1));
+						break;
+					case 4:
+						mb.setKaisou4(rs.getString(1));
+						break;
+					}
+				}
+				while (cnt < 4) {
+					switch (++cnt) {
+					case 1:
+						mb.setKaisou1("");
+						break;
+					case 2:
+						mb.setKaisou2("");
+						break;
+					case 3:
+						mb.setKaisou3("");
+						break;
+					case 4:
+						mb.setKaisou4("");
+						break;
+					}
+				}
+				mbL.add(mb);
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mbL;
+	}
+
 	public void newUser(udatabean ud) throws Exception {
 		// 登録処理書く
 
@@ -328,13 +519,14 @@ public class DBconnector {
 		}
 
 	}
+
 	/**
 	 * 
 	 * @param mcb
 	 * @return 0:該当なし,1:同一企業グループあり,2:同一マニュアルもあり
 	 * @throws Exception
 	 */
-	public int manualSelect(manualclassbean mcb)throws Exception{
+	public int manualSelect(manualclassbean mcb) throws Exception {
 		int resnum = 0;
 		Conect();
 		String sql = "SELECT COUNT(*) FROM tb_trn_manual_classification WHERE company_id = ? AND group1_id = ? AND group2_id = ?;";
@@ -343,85 +535,89 @@ public class DBconnector {
 		pstmt.setString(1, mcb.getCompany_id());
 		pstmt.setString(2, mcb.getGroup1_id());
 		pstmt.setString(3, mcb.getGroup2_id());
-		
+
 		ResultSet rs = pstmt.executeQuery();
 		rs.next();
-		if(rs.getInt(1) > 0)
+		if (rs.getInt(1) > 0)
 			resnum++;
-		
+
 		sql = "SELECT COUNT(*) FROM tb_trn_manual_classification WHERE company_id = ? AND group1_id = ? AND group2_id = ? AND manual_classification_name = ?;";
 		pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, mcb.getCompany_id());
 		pstmt.setString(2, mcb.getGroup1_id());
 		pstmt.setString(3, mcb.getGroup2_id());
 		pstmt.setString(4, mcb.getManual_classification_name());
-		
+
 		rs = pstmt.executeQuery();
 		rs.next();
-		if(rs.getInt(1) > 0)
+		if (rs.getInt(1) > 0)
 			resnum++;
-		
+
 		if (conn != null) {
 			conn.close();
 		}
 		return resnum;
 	}
-	public int manualUpdcnt(manualclassbean mcb){
+
+	public int manualUpdcnt(manualclassbean mcb) {
 		int resnum = 0;
-		try{
-		Conect();
-		String sql = "SELECT update_count,manual_classification_id FROM tb_trn_manual_classification WHERE company_id = ? AND group1_id = ? AND group2_id = ? AND manual_classification_name = ? ORDER BY update_count DESC LIMIT 1;";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, mcb.getCompany_id());
-		pstmt.setString(2, mcb.getGroup1_id());
-		pstmt.setString(3, mcb.getGroup2_id());
-		pstmt.setString(4, mcb.getManual_classification_name());
-		
-		ResultSet rs = pstmt.executeQuery();
-		rs.next();
-		resnum = rs.getInt(1);
-		mcb.setManual_classification_id(rs.getString(2));
-		
-		if (conn != null) {
-			conn.close();
-		}
-		}catch(Exception e){
+		try {
+			Conect();
+			String sql = "SELECT update_count,manual_classification_id FROM tb_trn_manual_classification WHERE company_id = ? AND group1_id = ? AND group2_id = ? AND manual_classification_name = ? ORDER BY update_count DESC LIMIT 1;";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mcb.getCompany_id());
+			pstmt.setString(2, mcb.getGroup1_id());
+			pstmt.setString(3, mcb.getGroup2_id());
+			pstmt.setString(4, mcb.getManual_classification_name());
+
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			resnum = rs.getInt(1);
+			mcb.setManual_classification_id(rs.getString(2));
+
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resnum;
 	}
+
 	/**
 	 * 02以降のマニュアル種別IDの取得
+	 * 
 	 * @param mcb
 	 * @return 現在採番されている最大のマニュアル種別ID
 	 */
-	public String getManualclassid(manualclassbean mcb){
+	public String getManualclassid(manualclassbean mcb) {
 		String resstr = null;
-		try{
-		Conect();
-		String sql = "SELECT DISTINCT manual_classification_id FROM tb_trn_manual_classification"
-				+ " WHERE company_id = ? AND group1_id = ? AND group2_id = ? ORDER BY manual_classification_id desc LIMIT 1;";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, mcb.getCompany_id());
-		pstmt.setString(2, mcb.getGroup1_id());
-		pstmt.setString(3, mcb.getGroup2_id());
-		
-		ResultSet rs = pstmt.executeQuery();
-		rs.next();
-		resstr = rs.getString(1);
-		mcb.setManual_classification_id(rs.getString(1));
-		
-		if (conn != null) {
-			conn.close();
-		}
-		}catch(Exception e){
+		try {
+			Conect();
+			String sql = "SELECT DISTINCT manual_classification_id FROM tb_trn_manual_classification"
+					+ " WHERE company_id = ? AND group1_id = ? AND group2_id = ? ORDER BY manual_classification_id desc LIMIT 1;";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mcb.getCompany_id());
+			pstmt.setString(2, mcb.getGroup1_id());
+			pstmt.setString(3, mcb.getGroup2_id());
+
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			resstr = rs.getString(1);
+			mcb.setManual_classification_id(rs.getString(1));
+
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resstr;
 	}
-	//新規用
+
+	// 新規用
 	public void manualInsert(manualclassbean mcb, manualinbean mib) {
 		try {
 			Conect();
@@ -442,8 +638,8 @@ public class DBconnector {
 
 			int rnum = pstmt.executeUpdate();
 			System.out.println("更新:" + rnum);
-			
-			//mibの登録
+
+			// mibの登録
 			sql = "INSERT INTO tb_trn_manual_details VALUES(?,?,?,?,0,?,?,?,null,NOW(),NOW(),0);";
 
 			pstmt = conn.prepareStatement(sql);
@@ -455,12 +651,12 @@ public class DBconnector {
 			pstmt.setString(5, mib.getManual_name());
 			pstmt.setString(6, mib.getManual_content1());
 			pstmt.setString(7, mib.getManual_content2());
-			
+
 			rnum = pstmt.executeUpdate();
 			System.out.println("更新:" + rnum);
-			//mib(各階層の登録)
-			for(int i=0;i < 4;i++){
-				if(mib.getDir_name(i) != null && mib.getDir_id(i) != null){
+			// mib(各階層の登録)
+			for (int i = 0; i < 4; i++) {
+				if (mib.getDir_name(i) != null && mib.getDir_id(i) != null) {
 					sql = "INSERT INTO tb_trn_manual_details VALUES(?,?,?,?,0,?,null,null,null,NOW(),NOW(),0);";
 
 					pstmt = conn.prepareStatement(sql);
@@ -470,14 +666,14 @@ public class DBconnector {
 					pstmt.setString(3, mib.getGroup2_id());
 					pstmt.setString(4, mib.getDir_id(i));
 					pstmt.setString(5, mib.getDir_name(i));
-					
+
 					rnum = pstmt.executeUpdate();
 					System.out.println("更新:" + rnum);
 				}
 			}
 
 			conn.commit();
-		} catch (Exception e){
+		} catch (Exception e) {
 			try {
 				// ロールバック …… 【3】
 				e.printStackTrace();
@@ -500,59 +696,59 @@ public class DBconnector {
 		}
 
 	}
-	//更新用
-	public void manualUpdate(manualclassbean mcb, manualinbean mib){
+
+	// 更新用
+	public void manualUpdate(manualclassbean mcb, manualinbean mib) {
 		try {
 			Conect();
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt;
-			
+
 			boolean delflg = false;
-			
+
 			String sql = "SELECT COUNT(manual_name) FROM tb_trn_manual_details WHERE manual_name = ?;";
-			
+
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setString(1, mib.getManual_name());
-			
+
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
-			
-			if(rs.getInt(1) > 0){
-				//同盟のマニュアルが一件以上ヒットした場合
+
+			if (rs.getInt(1) > 0) {
+				// 同盟のマニュアルが一件以上ヒットした場合
 				sql = "UPDATE tb_trn_manual_details a,(SELECT MAX(update_count) tar FROM tb_trn_manual_details WHERE manual_name = ? ) b SET delete_flag = 1 WHERE a.update_count = b.tar;";
-				
+
 				pstmt = conn.prepareStatement(sql);
-				
+
 				pstmt.setString(1, mib.getManual_name());
-				
+
 				pstmt.executeUpdate();
-				
-				//マニュアル種別用
+
+				// マニュアル種別用
 				sql = "UPDATE tb_trn_manual_classification a,(SELECT MAX(update_count) tar FROM tb_trn_manual_details WHERE manual_name = ? ) b SET delete_flag = 1 WHERE a.update_count = b.tar;";
-				
+
 				pstmt = conn.prepareStatement(sql);
-				
+
 				pstmt.setString(1, mib.getManual_name());
-				
+
 				pstmt.executeUpdate();
 			}
-			
+
 			// 登録処理
-			
-			
+
 			sql = "SELECT regist_time FROM tb_trn_manual_classification WHERE company_id = ? AND group1_id = ? AND group2_id = ? AND manual_classification_name = ? ORDER BY update_count DESC LIMIT 1;";
-			
+
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setString(1, mcb.getCompany_id());
 			pstmt.setString(2, mcb.getGroup1_id());
 			pstmt.setString(3, mcb.getGroup2_id());
 			pstmt.setString(4, mcb.getManual_classification_name());
-			
+
 			rs = pstmt.executeQuery();
 			rs.next();
-			
+
 			sql = "INSERT INTO tb_trn_manual_classification" + " VALUES(?,?,?,?,?,?,?,NOW(),?,0);";
 
 			pstmt = conn.prepareStatement(sql);
@@ -568,8 +764,8 @@ public class DBconnector {
 
 			int rnum = pstmt.executeUpdate();
 			System.out.println("更新:" + rnum);
-			
-			//mibの登録
+
+			// mibの登録
 			sql = "INSERT INTO tb_trn_manual_details VALUES(?,?,?,?,?,?,?,?,null,NOW(),?,0);";
 
 			pstmt = conn.prepareStatement(sql);
@@ -583,12 +779,12 @@ public class DBconnector {
 			pstmt.setString(7, mib.getManual_content1());
 			pstmt.setString(8, mib.getManual_content2());
 			pstmt.setTimestamp(9, rs.getTimestamp(1));
-			
+
 			rnum = pstmt.executeUpdate();
 			System.out.println("更新:" + rnum);
-			//mib(各階層の登録)
-			for(int i=0;i < 4;i++){
-				if(mib.getDir_name(i) != null && mib.getDir_id(i) != null){
+			// mib(各階層の登録)
+			for (int i = 0; i < 4; i++) {
+				if (mib.getDir_name(i) != null && mib.getDir_id(i) != null) {
 					sql = "INSERT INTO tb_trn_manual_details VALUES(?,?,?,?,?,?,null,null,null,NOW(),?,0);";
 
 					pstmt = conn.prepareStatement(sql);
@@ -600,14 +796,14 @@ public class DBconnector {
 					pstmt.setInt(5, mib.getUpdate_count());
 					pstmt.setString(6, mib.getDir_name(i));
 					pstmt.setTimestamp(7, rs.getTimestamp(1));
-					
+
 					rnum = pstmt.executeUpdate();
 					System.out.println("更新:" + rnum);
 				}
 			}
 
 			conn.commit();
-		} catch (Exception e){
+		} catch (Exception e) {
 			try {
 				// ロールバック …… 【3】
 				e.printStackTrace();

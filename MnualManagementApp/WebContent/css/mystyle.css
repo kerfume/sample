@@ -20,7 +20,28 @@ table#m_i{
 	margin-left: auto;
 	margin-right: auto;
 }
-
+table#m_m{
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+table#m_mb{
+	text-align: right;
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+table#m_e{
+	width: 500px;
+	/*margin-left: auto;*/
+	margin-right: auto;
+}
+table#m_li{
+	margin: 40px 0px 0px 0px;
+	}
+th#lef{
+	text-align: left;
+}
 td#waku{
 	padding: 5px;
 	text-align: left;
@@ -55,6 +76,21 @@ div#body_m_in {
 	-webkit-border-radius: 20px;
 	color: #111;
 	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div#body_m_ed {
+	padding: 50px;
+	margin: 40px;
+	text-align: left;
+	background: #fffafa;
+	border: 1px solid #cfd5e2;
+	border-radius: 20px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	color: #111;
+	width: 800px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -183,7 +219,7 @@ h2 {
 }
 
 input {
-	padding: 10px 10px;
+	padding: 2px 2px;
 }
 
 input#right {

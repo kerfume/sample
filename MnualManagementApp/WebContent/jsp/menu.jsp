@@ -32,8 +32,8 @@
 				<s:submit cssClass="blue_bymenu" value="マニュアルデータ取り込み" />
 			</s:form>
 			<br /> <br />
-			<s:form method="post" action="menuaction" theme="simple">
-			<s:submit cssClass="blue_bymenu" value="マニュアルデータ修正" method="dummy" />
+			<s:form method="post" action="manualeditaction" theme="simple">
+			<s:submit cssClass="blue_bymenu" value="マニュアルデータ修正" />
 			</s:form>
 			<br /> <br />
 			<s:form method="post" action="useraction" theme="simple">
