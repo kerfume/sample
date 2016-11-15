@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  
+  
+    <bean id="MakeDto" class="jp.kerfume.app.logic.MakeDtoImpl" ></bean>
+  
+  
+  <bean id="DaoFactory" class="jp.kerfume.app.logic.MyDaoFactoryImpl" >
+  <property name="daoType" value="${type}" />
+  </bean>
+  
+  <bean id="appProps"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- jar内部 <value>classpath:factoryconf.properties</value>-->
+				<!-- 相対指定 （jar実行ディレクトリ./）--><value>file:factoryconf.properties</value>
+				<!-- 絶対指定 <value>file:E:\tmp\filescontext.properties</value> -->
+			</list>
+		</property>
+	</bean>
+  
+ </beans>

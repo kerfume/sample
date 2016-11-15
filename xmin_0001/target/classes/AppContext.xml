@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  
+  
+  <bean id="main" class="jp.kerfume.app.logic.FileToPerpeImpl" >
+  	<property name="path" value="${infile.path}" />
+  	<property name="filename" value="${infile.name}" />
+  </bean>
+  
+  <bean id="appProps"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- jar内部 --><value>file:xmin_0001conf.properties</value>
+				<!-- 相対指定 （jar実行ディレクトリ./） <value>file:deploy_res/filescontext.properties</value> -->
+				<!-- 絶対指定 <value>file:E:\tmp\filescontext.properties</value> -->
+			</list>
+		</property>
+	</bean>
+
+ </beans>

@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+============================================*/
+* {
+	margin:0;
+	padding:0; 	/*全要素のマージン・パディングをリセット*/
+	line-height:1.5;	/*全要素の行の高さを1.5倍にする*/
+	color:#333333;		/*文字色*/
+
+} 
+body {
+	width:700px; margin:0 auto;
+	background-image:url("../img/008.gif");	/*ページ全体の背景色*/
+	text-align:center;		/*IE6以下でセンタリングするための対策*/
+}
+
+div#main{
+    text-align:left;
+    margin-top: 50px;
+    color: #fff;
+    background: #3cb371;
+    padding: 20px;
+    border: 2px dashed rgba(255,255,255,0.5);
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    box-shadow: 0 0 0 5px #3cb371, 0 2px 3px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 0 5px #3cb371, 0 2px 3px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 0 5px #3cb371, 0 2px 3px 5px rgba(0,0,0,0.5);
+}
+div#conf{
+    text-align:left;
+    color: #333333;
+    background: #98FB98;
+    padding: 20px;
+    border: 2px dashed rgba(255,255,255,0.5);
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    box-shadow: 0 0 0 5px #98FB98, 0 2px 3px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 0 5px #98FB98, 0 2px 3px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 0 5px #98FB98 , 0 2px 3px 5px rgba(0,0,0,0.5);
+}
+div#pin {
+	 text-align:center ;
+    background: #fffafa;
+    border: 1px solid #cfd5e2;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    color: #111;
+    width: 200px;  
+    padding: 10px 0;
+}
+
+
+h1{
+    position: relative;
+    color: #fff;
+    background: #B92A2C;
+    font-size: 1.400em;
+    font-weight: bold;
+    margin: 0 -1.8em 1.5em -1.8em;
+    padding: 0.8em;
+    box-shadow: 0 1px 3px #777;
+    -moz-box-shadow: 0 1px 3px #777;
+    -webkit-box-shadow: 0 1px 3px #777;
+    -o-box-shadow: 0 1px 3px #777;
+    -ms-box-shadow: 0 1px 3px #777;
+}
+ 
+h1:after,
+h1:before{
+    content: "";
+    position: absolute;
+    top: 100%;
+    height: 0;
+    width: 0;
+    border: 5px solid transparent;
+    border-top: 5px solid #333;
+}
+ 
+h1:before{
+    right: 0;
+    border-left: 8px solid #333;
+}
+ 
+h1:after{
+    left: 0;
+    border-right: 8px solid #333;
+}

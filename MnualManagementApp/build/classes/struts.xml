@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.multipart.maxSize" value="5097152" />
+
+	<!-- Add packages here
+		<package name="mma" namespace="/jsp" extends="struts-default">
+		<action name="loginaction" class="kei.webapp.action.loginAction">
+		<result name="sucsess">/jsp/login.jsp</result>
+		<result name="input">/jsp/login.jsp</result>
+		<result name="login">/jsp/menu.jsp</result>
+		</action>
+		</package> -->
+	<!-- <package name="mma" extends="struts-default">
+		<action name="useraction" class="kei.webapp.action.usereditAction">
+		<result name="sucsess">/jsp/useredit.jsp</result>
+		<result name="input">/jsp/useredit.jsp</result>
+		<result name="back">/jsp/menu.jsp</result>
+			<interceptor-ref name="basicStack" />
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/jpeg,image/png,image/bmp</param>
+				<param name="maximumSize">2000000</param>
+			</interceptor-ref>
+		</action>
+	</package> -->
+
+</struts>

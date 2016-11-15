@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+ <form-beans>
+  <form-bean
+   name="TopForm"
+   type="kei.quizapp.TopForm"/>
+   
+   <form-bean
+   name="QuizScrForm"
+   type="kei.quizapp.QuizScrForm"/>
+   
+   <form-bean
+   name="AnsScrForm"
+   type="kei.quizapp.AnsScrForm"/>
+   
+   <form-bean
+   name="ResultForm"
+   type="kei.quizapp.ResultForm"/>
+   
+  </form-beans>
+  
+  <action-mappings>
+   <action 
+   path="/topaction"
+   name="TopForm"
+   type="kei.quizapp.TopAction"
+   input="/Top.jsp">
+   
+   <forward name="start" path="/app/QuizScr.jsp"/>
+   <forward name="err" path="/Err.html"/>
+   
+   </action>
+   
+   <action 
+   path="/quizscraction"
+   name="QuizScrForm"
+   type="kei.quizapp.QuizScrAction"
+   input="/app/QuizScr.jsp">
+   
+   <forward name="answer" path="/app/AnsScr.jsp"/>
+   <forward name="err" path="/Err.html"/>
+   
+   
+   </action>
+   
+   <action 
+   path="/ansscraction"
+   name="AnsScrForm"
+   type="kei.quizapp.AnsScrAction"
+   input="/app/QuizScr.jsp">
+   
+   <forward name="quiz" path="/app/QuizScr.jsp"/>
+   <forward name="err" path="/Err.html"/>
+   
+   </action>
+   
+   <action 
+   path="/ansscr2action"
+   name="AnsScrForm"
+   type="kei.quizapp.AnsScr2Action"
+   input="/app/QuizScr.jsp">
+   
+   <forward name="result" path="/app/Result.jsp"/>
+   <forward name="err" path="/Err.html"/>
+   
+   </action>
+   
+   <action 
+   path="/result"
+   name="ResultForm"
+   type="kei.quizapp.ResultAction"
+   input="/app/Result.jsp">
+   
+   <forward name="top" path="/Top.jsp"/>
+   <forward name="err" path="/Err.html"/>
+   
+   </action>
+   
+   </action-mappings>
+   
+   
+	
+</struts-config>

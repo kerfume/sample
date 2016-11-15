@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE validators PUBLIC
+  "-//Apache Struts//XWork Validator 1.0.3//EN"
+  "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<validators>
+	<field name="user_id">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>ログインIDを入力してください。</message>
+		</field-validator>
+		<field-validator type="stringlength">
+			<param name="minLength">10</param>
+			<param name="maxLength">10</param>
+			<message>10桁のログインIDを入力してください。</message>
+		</field-validator>
+	</field>
+	<field name="password">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>パスワードを入力してください。</message>
+		</field-validator>
+		<field-validator type="stringlength">
+			<param name="minLength">4</param>
+			<param name="maxLength">8</param>
+			<message>4桁以上、8桁以下のパスワードを入力してください。</message>
+		</field-validator>
+	</field>
+</validators>
