@@ -13,7 +13,8 @@
 <script type="text/javascript">
 var con;
 $(function(){
- con = new WebSocket("ws://localhost:9000/socket/" + $("#name").text());
+ //con = new WebSocket("ws://localhost:9000/socket/" + $("#name").text());
+ con = new WebSocket("ws://" + document.domain + ":9000/socket/" + $("#name").text());
  con.open = function() {};
  con.onclose = function() {con.send($("#name").text()); webSocket = null;};
  con.onmessage = function(event) {
