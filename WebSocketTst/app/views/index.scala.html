@@ -1,20 +1,18 @@
-@*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
-@(message: String)
+@(message: String , nameForm:Form[String])
+@import helper._
+@import play.api.Play.current
+@import play.api.i18n.Messages.Implicits._
 
-@*
- * Call the `main` template with two arguments. The first
- * argument is a `String` with the title of the page, the second
- * argument is an `Html` object containing the body of the page.
- *@
-@main("Welcome to Play! KEi") {
+@main("PleaseName") {
 
     @*
      * Get an `Html` object by calling the built-in Play welcome
      * template and passing a `String` message.
      *@
-    @play20.welcome(message, style = "Scala")
+    <h1>Hello!</h1>
+    @form(action = controllers.routes.Application.chat(), 'id -> "checkForm") {
+      @inputText(nameForm("name"),'_label -> "Email Address")
+      <input type="submit" value="送信">
+    }
 
 }

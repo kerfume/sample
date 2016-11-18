@@ -1,0 +1,58 @@
+@(name: String)
+@import helper._
+@import play.api.Play.current
+@import play.api.i18n.Messages.Implicits._
+
+@main("Chat!") {
+<style>
+    .ledBold{
+      color: red;
+      font-weight: bold;
+    }
+</style>
+<script type="text/javascript">
+var con;
+$(function(){
+ con = new WebSocket("ws://localhost:9000/socket/" + $("#name").text());
+ con.open = function() {};
+ con.onclose = function() {con.send($("#name").text()); webSocket = null;};
+ con.onmessage = function(event) {
+  //alert(event.data)
+  $("#message").append("<div>" + event.data + "</div>")
+ };
+
+ $(window).unload(function() {
+  con.onclose();
+ });
+});
+
+function toSocket(){
+  //alert($("#sendmess").val())
+  scokeSend($("#sendmess").val())
+ }
+
+function scokeSend(str) { con.send(str); }
+
+//stubMethod
+function sendMessage(){
+     var mess = $("#sendmess").val()
+     if(!(mess === "" && mess.length === 0)){
+         //alert($("#sendmess").val())
+         //$("#message").append("<div>" + mess + "</div>")
+     }
+}
+</script>
+@*
+* Get an `Html` object by calling the built-in Play welcome
+* template and passing a `String` message.
+*@
+<h1>PleesSend!</h1>
+<p class="ledBold">name:<span id="name">@{name}</span></p>
+<form>
+    <input type="text" id="sendmess">
+    <input type="button" value="Send!" onclick="toSocket()">
+</form>
+<div id="message">
+    <div>Message's</div>
+</div>
+}
